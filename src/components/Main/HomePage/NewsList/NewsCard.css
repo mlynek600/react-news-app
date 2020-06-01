@@ -1,0 +1,36 @@
+.NewsCard {
+  flex-basis: 30%;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  border: 1px solid grey;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.NewsCard-img img {
+  max-width: 100%;
+}
+
+.NewsCard-content {
+  padding: 0 12px 12px 12px;
+}
+
+.NewsCard-footer {
+  font-style: italic;
+  width: 100%;
+  font-size: 0.9rem;
+  align-self: flex-end;
+  text-align: right;
+  padding-right: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.time {
+  font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+  .NewsCard {
+    flex-basis: 45%;
+  }
+}
