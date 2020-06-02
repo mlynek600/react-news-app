@@ -7,15 +7,14 @@
 
 ## General info
 This project is an app, which fetch some news from different sources.
+You can choose the category of news and search for the news by typing specific words.
 	
 ## Technologies
 Project is created with:
-* HTML5
-* CSS3
-* JS
 * React (create-react-app, react-router)
 * Node.js and Express.js, superagent
 * News API
+* CSS3
 	
 ## Setup
 To run this project:
