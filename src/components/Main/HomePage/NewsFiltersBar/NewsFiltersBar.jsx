@@ -8,7 +8,7 @@ const NewsFiltersBar = props => (
       <label>Search: </label>
       <input
         className="input"
-        placeholder="what you are looking for"
+        placeholder="what are you looking for"
         onChange={e => props.onSearchQueryChange(e.target.value)}
       ></input>
     </div>
