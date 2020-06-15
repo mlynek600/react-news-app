@@ -12,6 +12,12 @@ app.get("/articles", (req, res) => {
   });
 });
 
+app.get("/jordan", (req, res) => {
+  newsapi.getJordanNews(req.query).then(response => {
+    res.json(response.body);
+  });
+});
+
 app.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)
 );

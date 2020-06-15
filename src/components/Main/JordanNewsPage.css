@@ -1,0 +1,26 @@
+.JordanNewsPage {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.JordanNewsPage label {
+  padding: 10px;
+  width: 8rem;
+  display: inline-block;
+}
+
+.date {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 7rem;
+}

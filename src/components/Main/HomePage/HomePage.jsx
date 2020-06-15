@@ -2,29 +2,38 @@ import React, { Component } from "react";
 import "./HomePage.css";
 import NewsFiltersBar from "./NewsFiltersBar/NewsFiltersBar";
 import NewsList from "./NewsList/NewsList";
+import LanguageContext from "../../../LanguageContext";
 
 class HomePage extends Component {
+  static contextType = LanguageContext;
   constructor(props) {
     super(props);
 
     this.state = {
       results: null,
       category: "general",
-      searchQuery: null
+      searchQuery: null,
+      lang: "us",
+      pagesNumber: 1,
+      page: 1
     };
   }
 
   componentDidMount() {
     this.getArticles();
+    this.setState({ lang: this.context });
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (
       prevState.category !== this.state.category ||
-      prevState.searchQuery !== this.state.searchQuery
+      prevState.searchQuery !== this.state.searchQuery ||
+      prevState.lang !== this.state.lang ||
+      prevState.page !== this.state.page
     ) {
       this.getArticles();
     }
+    if (this.context !== this.state.lang) this.setState({ lang: this.context });
   }
 
   getQuery() {
@@ -33,27 +42,35 @@ class HomePage extends Component {
     let query;
     if (category) {
       query = searchQuery
-        ? `?category=${category}&q=${searchQuery}`
-        : `?category=${category}`;
+        ? `&category=${category}&q=${searchQuery}`
+        : `&category=${category}`;
     } else {
-      query = searchQuery ? `?q=${searchQuery}` : "";
+      query = searchQuery ? `&q=${searchQuery}` : "";
     }
     return query;
   }
 
   getArticles() {
-    fetch(`http://localhost:4000/articles${this.getQuery()}`)
+    const { lang, page } = this.state;
+
+    fetch(
+      `http://localhost:4000/articles?country=${lang}${this.getQuery()}&page=${page}`
+    )
       .then(response => response.json())
       .then(results => {
         this.setState({ results });
+        this.setState({
+          pagesNumber: Math.ceil(results.totalResults / 15)
+        });
       });
   }
 
   setCategory = category => this.setState({ category });
   setSearchQuery = searchQuery => this.setState({ searchQuery });
+  setPage = page => this.setState({ page });
 
   render() {
-    const { results } = this.state;
+    const { results, pagesNumber, category } = this.state;
 
     if (!results) return null;
 
@@ -62,9 +79,13 @@ class HomePage extends Component {
         <NewsFiltersBar
           onCategoryChange={this.setCategory}
           onSearchQueryChange={this.setSearchQuery}
-          category={this.state.category}
+          category={category}
         />
-        <NewsList articles={results.articles} />
+        <NewsList
+          articles={results.articles}
+          onPageChange={this.setPage}
+          pagesNumber={pagesNumber}
+        />
       </div>
     );
   }

@@ -1,9 +1,10 @@
 import React from "react";
 import "./NewsList.css";
 import NewsCard from "./NewsCard";
+import NewsPagination from "./NewsPagination";
 
 const NewsList = props => (
-  <div id="NewsList">
+  <>
     {props.articles.map(item => (
       <NewsCard
         urlToImage={item.urlToImage}
@@ -15,7 +16,13 @@ const NewsList = props => (
         publishedAt={item.publishedAt}
       />
     ))}
-  </div>
+    <div className="NewsPagination">
+      <NewsPagination
+        onPageChange={props.onPageChange}
+        pagesNumber={props.pagesNumber}
+      />
+    </div>
+  </>
 );
 
 export default NewsList;

@@ -1,4 +1,5 @@
 import React from "react";
+import { Card, Icon, Image } from "semantic-ui-react";
 import "./NewsCard.css";
 
 const NewsCard = ({
@@ -9,22 +10,25 @@ const NewsCard = ({
   author,
   publishedAt
 }) => (
-  <div className="NewsCard">
-    <div className="NewsCard-img">
-      <img src={urlToImage} alt={author} />
-    </div>
-    <div className="NewsCard-content">
-      <h2>{title}</h2>
-      <p className="time">{publishedAt.replace("T", " ").split("Z")}</p>
-      <p>{description}</p>
-    </div>
-    <div className="NewsCard-footer">
+  <Card>
+    <Image src={urlToImage} wrapped ui={false} alt={author} />
+    <Card.Content>
+      <Card.Header>{title}</Card.Header>
+      <Card.Meta>
+        <span>{publishedAt.replace("T", " ").split("Z")}</span>
+      </Card.Meta>
+      <Card.Description
+        dangerouslySetInnerHTML={{ __html: description }}
+      ></Card.Description>
+    </Card.Content>
+    <Card.Content extra>
       <p>source: {author}</p>
       <a href={url} target="_blank" rel="noopener noreferrer">
-        See more
+        <Icon name="eye" />
+        Read the full article
       </a>
-    </div>
-  </div>
+    </Card.Content>
+  </Card>
 );
 
 export default NewsCard;
