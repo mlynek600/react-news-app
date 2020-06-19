@@ -31,6 +31,10 @@ const JordanNewsPage = () => {
   }, [startDate, endDate, page, lang]);
 
   useEffect(() => {
+    setPage(1);
+  }, [startDate, endDate]);
+
+  useEffect(() => {
     fetchArticles();
   }, [fetchArticles]);
 
@@ -44,6 +48,9 @@ const JordanNewsPage = () => {
             onChange={setStartDate}
             dateFormat="dd-MM-yyyy"
             maxDate={endDate}
+            minDate={moment()
+              .subtract(1, "months")
+              .toDate()}
           />
         </div>
         <div>
@@ -62,6 +69,7 @@ const JordanNewsPage = () => {
           articles={results.articles}
           pagesNumber={pagesNumber}
           onPageChange={page => setPage(page)}
+          currentPage={page}
         />
       ) : null}
     </div>

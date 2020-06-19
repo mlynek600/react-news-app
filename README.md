@@ -15,7 +15,7 @@ You can choose the category of news and search for the news by typing specific w
 
 Project is created with:
 
-- React (with create-react-app, react-router react-datepicker, moment.js)
+- React (with create-react-app, react-router, react-datepicker, moment.js)
 - Node.js (with Express.js, superagent, nodemon)
 - News API
 - CSS3, Semantic UI React

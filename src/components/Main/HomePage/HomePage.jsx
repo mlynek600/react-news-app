@@ -65,12 +65,16 @@ class HomePage extends Component {
       });
   }
 
-  setCategory = category => this.setState({ category });
-  setSearchQuery = searchQuery => this.setState({ searchQuery });
+  setCategory = category => this.setState({ category, page: 1 });
+  setSearchQuery = searchQuery => {
+    this.setState({ searchQuery });
+    if (searchQuery) this.setState({ page: 1 });
+  };
+
   setPage = page => this.setState({ page });
 
   render() {
-    const { results, pagesNumber, category } = this.state;
+    const { results, pagesNumber, category, page } = this.state;
 
     if (!results) return null;
 
@@ -85,6 +89,7 @@ class HomePage extends Component {
           articles={results.articles}
           onPageChange={this.setPage}
           pagesNumber={pagesNumber}
+          currentPage={page}
         />
       </div>
     );

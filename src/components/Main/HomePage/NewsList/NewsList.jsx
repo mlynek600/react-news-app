@@ -20,6 +20,7 @@ const NewsList = props => (
       <NewsPagination
         onPageChange={props.onPageChange}
         pagesNumber={props.pagesNumber}
+        currentPage={props.currentPage}
       />
     </div>
   </>
