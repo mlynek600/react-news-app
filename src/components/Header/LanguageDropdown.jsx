@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./LanguageDropdown.css";
 import { Dropdown } from "semantic-ui-react";
 
 const countryOptions = [

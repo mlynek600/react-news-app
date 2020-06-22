@@ -13,14 +13,13 @@ class HomePage extends Component {
       results: null,
       category: "general",
       searchQuery: null,
-      lang: "us",
+      lang: "",
       pagesNumber: 1,
       page: 1
     };
   }
 
   componentDidMount() {
-    this.getArticles();
     this.setState({ lang: this.context });
   }
 
@@ -33,7 +32,8 @@ class HomePage extends Component {
     ) {
       this.getArticles();
     }
-    if (this.context !== this.state.lang) this.setState({ lang: this.context });
+    if (this.context !== this.state.lang)
+      this.setState({ lang: this.context, page: 1 });
   }
 
   getQuery() {
@@ -74,7 +74,7 @@ class HomePage extends Component {
   setPage = page => this.setState({ page });
 
   render() {
-    const { results, pagesNumber, category, page } = this.state;
+    const { results, pagesNumber, page } = this.state;
 
     if (!results) return null;
 
@@ -83,14 +83,19 @@ class HomePage extends Component {
         <NewsFiltersBar
           onCategoryChange={this.setCategory}
           onSearchQueryChange={this.setSearchQuery}
-          category={category}
         />
-        <NewsList
-          articles={results.articles}
-          onPageChange={this.setPage}
-          pagesNumber={pagesNumber}
-          currentPage={page}
-        />
+        {results.totalResults !== 0 ? (
+          <NewsList
+            articles={results.articles.filter((item, index, self) => {
+              return index === self.findIndex(t => t.title === item.title);
+            })}
+            onPageChange={this.setPage}
+            pagesNumber={pagesNumber}
+            currentPage={page}
+          />
+        ) : (
+          <h1>No results</h1>
+        )}
       </div>
     );
   }

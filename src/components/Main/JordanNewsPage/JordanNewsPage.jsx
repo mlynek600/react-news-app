@@ -2,9 +2,10 @@ import React, { useState, useEffect, useCallback, useContext } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./JordanNewsPage.css";
-import NewsList from "./HomePage/NewsList/NewsList";
+import NewsList from "../HomePage/NewsList/NewsList";
+import SortingDropdown from "./SortingDropdown";
 import moment from "moment";
-import LanguageContext from "../../LanguageContext";
+import LanguageContext from "../../../LanguageContext";
 
 const JordanNewsPage = () => {
   const [startDate, setStartDate] = useState(
@@ -16,36 +17,50 @@ const JordanNewsPage = () => {
   const [results, setResults] = useState(null);
   const [page, setPage] = useState(1);
   const [pagesNumber, setPagesNumber] = useState(1);
-  const lang = useContext(LanguageContext);
+  const [sorting, setSorting] = useState("relevancy");
+  const contextlang = useContext(LanguageContext);
+  const [lang, setLang] = useState(contextlang);
 
   const fetchArticles = useCallback(() => {
     fetch(
-      `http://localhost:4000/jordan?from=${startDate.toISOString()}&to=${endDate.toISOString()}&page=${page}` +
-        (lang === "us" ? "" : `&language=${lang}`)
+      `http://localhost:4000/jordan?from=${startDate.toISOString()}&to=${endDate.toISOString()}&page=${page}&sortBy=${sorting}` +
+        (lang === "us" ? "&language=en" : `&language=${lang}`)
     )
       .then(response => response.json())
       .then(res => {
         setResults(res);
         setPagesNumber(Math.ceil(res.totalResults / 15));
       });
-  }, [startDate, endDate, page, lang]);
+  }, [startDate, endDate, page, sorting, lang]);
 
   useEffect(() => {
+    setLang(contextlang);
     setPage(1);
-  }, [startDate, endDate]);
+  }, [contextlang]);
 
   useEffect(() => {
     fetchArticles();
   }, [fetchArticles]);
 
+  if (!results) return null;
+
   return (
     <div className="JordanNewsPage">
+      <SortingDropdown
+        onSortingChange={sorting => {
+          setSorting(sorting);
+          setPage(1);
+        }}
+      />
       <div className="date">
         <div>
           <label>Start date:</label>
           <DatePicker
             selected={startDate}
-            onChange={setStartDate}
+            onChange={date => {
+              setStartDate(date);
+              setPage(1);
+            }}
             dateFormat="dd-MM-yyyy"
             maxDate={endDate}
             minDate={moment()
@@ -57,21 +72,28 @@ const JordanNewsPage = () => {
           <label>End date:</label>
           <DatePicker
             selected={endDate}
-            onChange={setEndDate}
+            onChange={date => {
+              setEndDate(date);
+              setPage(1);
+            }}
             dateFormat="dd-MM-yyyy"
             maxDate={new Date()}
             minDate={startDate}
           />
         </div>
       </div>
-      {results ? (
+      {results.totalResults !== 0 ? (
         <NewsList
-          articles={results.articles}
+          articles={results.articles.filter((item, index, self) => {
+            return index === self.findIndex(t => t.title === item.title);
+          })}
           pagesNumber={pagesNumber}
-          onPageChange={page => setPage(page)}
+          onPageChange={setPage}
           currentPage={page}
         />
-      ) : null}
+      ) : (
+        <h1>No results</h1>
+      )}
     </div>
   );
 };

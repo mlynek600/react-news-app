@@ -6,10 +6,7 @@ import { Input } from "semantic-ui-react";
 const NewsFiltersBar = props => (
   <div className="NewsFiltersBar">
     <div className="category">
-      <CategoryDropdown
-        onCategoryChange={props.onCategoryChange}
-        category={props.category}
-      />
+      <CategoryDropdown onCategoryChange={props.onCategoryChange} />
     </div>
     <div className="search">
       <Input

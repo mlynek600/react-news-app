@@ -1,53 +1,69 @@
 import React, { Component } from "react";
-import { Menu, Segment } from "semantic-ui-react";
-import "./Header.css";
-import { Link } from "react-router-dom";
+import { Menu, Segment, Dropdown } from "semantic-ui-react";
+import { NavLink } from "react-router-dom";
 import LanguageDropdown from "./LanguageDropdown";
 
 export default class Header extends Component {
-  state = { activeItem: "home" };
-
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      device: "mobile"
+    };
+  }
+  reportWindowSize = () => {
+    if (window.innerWidth < 768) {
+      this.setState({ device: "mobile" });
+    } else {
+      this.setState({ device: "desktop" });
+    }
+  };
+  componentDidMount() {
+    window.addEventListener("resize", this.reportWindowSize);
+    if (window.innerWidth < 768) {
+      this.setState({ device: "mobile" });
+    } else {
+      this.setState({ device: "desktop" });
+    }
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.reportWindowSize);
+  }
   render() {
-    const { activeItem } = this.state;
-
+    const { device } = this.state;
     return (
-      <Segment inverted>
-        <Menu inverted secondary>
-          <Menu.Item
-            as={Link}
-            to="/"
-            name="home"
-            active={activeItem === "home"}
-            onClick={this.handleItemClick}
-          />
+      <header>
+        <Segment inverted>
+          <Menu inverted secondary>
+            {device === "mobile" ? (
+              <Dropdown item icon="align justify">
+                <Dropdown.Menu>
+                  <Dropdown.Item as={NavLink} to="/" exact>
+                    Home
+                  </Dropdown.Item>
+                  <Dropdown.Item as={NavLink} to="/jordan">
+                    Michael Jordan News
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            ) : (
+              <>
+                <Menu.Item as={NavLink} to="/" name="home" exact />
+                <Menu.Item
+                  as={NavLink}
+                  to="/jordan"
+                  name="michael jordan news"
+                />
+              </>
+            )}
 
-          <Menu.Item
-            as={Link}
-            to="/jordan"
-            name="michael jordan news"
-            active={activeItem === "jordan news"}
-            onClick={this.handleItemClick}
-          />
-
-          <Menu.Item
-            as={Link}
-            to="/help"
-            name="help"
-            active={activeItem === "help"}
-            onClick={this.handleItemClick}
-          />
-
-          <Menu.Menu position="right">
-            <Menu.Item>
+            <Menu.Menu position="right">
               <LanguageDropdown
                 onLanguageChange={this.props.onLanguageChange}
               />
-            </Menu.Item>
-          </Menu.Menu>
-        </Menu>
-      </Segment>
+            </Menu.Menu>
+          </Menu>
+        </Segment>
+      </header>
     );
   }
 }

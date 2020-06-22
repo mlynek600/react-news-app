@@ -1,9 +1,7 @@
 import React from "react";
-import "./Main.css";
 import { Switch, Route } from "react-router-dom";
 import HomePage from "./HomePage/HomePage";
-import JordanNewsPage from "./JordanNewsPage";
-import HelpPage from "./HelpPage";
+import JordanNewsPage from "./JordanNewsPage/JordanNewsPage";
 
 const Main = () => (
   <main>
@@ -13,9 +11,6 @@ const Main = () => (
       </Route>
       <Route exact path="/jordan">
         <JordanNewsPage />
-      </Route>
-      <Route exact path="/help">
-        <HelpPage />
       </Route>
     </Switch>
   </main>

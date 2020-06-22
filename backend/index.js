@@ -15,6 +15,7 @@ app.get("/articles", (req, res) => {
 app.get("/jordan", (req, res) => {
   newsapi.getJordanNews(req.query).then(response => {
     res.json(response.body);
+    console.log(response.body);
   });
 });
 

@@ -12,13 +12,14 @@ const options = [
   { key: 7, text: "Technology", value: "technology" }
 ];
 
-const CategoryDropdown = ({ category, onCategoryChange }) => (
+const CategoryDropdown = ({ onCategoryChange }) => (
   <Menu compact>
     <Dropdown
       placeholder="Select category"
       options={options}
       selection
       onChange={(event, data) => onCategoryChange(data.value)}
+      className="category-dropdown"
     />
   </Menu>
 );
