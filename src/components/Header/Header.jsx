@@ -19,11 +19,7 @@ export default class Header extends Component {
   };
   componentDidMount() {
     window.addEventListener("resize", this.reportWindowSize);
-    if (window.innerWidth < 768) {
-      this.setState({ device: "mobile" });
-    } else {
-      this.setState({ device: "desktop" });
-    }
+    this.reportWindowSize();
   }
   componentWillUnmount() {
     window.removeEventListener("resize", this.reportWindowSize);
